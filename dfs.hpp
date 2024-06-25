@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <stack>
 
 #include "node.hpp"
 
@@ -9,10 +9,12 @@ template <typename T>
 class dfs{
     private:
         Node<T> *_root; // Root of the tree
-        std::vector<Node<T>*> stack; // Stack to store the nodes
+        std::stack<Node<T>*> stack; // Stack to store the nodes
 
     public:
-        dfs(Node<T>* root): _root(root){} // Constructor
+        dfs(Node<T>* root): _root(root){ // Constructor
+            stack.push(_root); // Push the root to the queue
+        }
 
     Node<T> *get_root(){
         return _root;
@@ -20,10 +22,16 @@ class dfs{
 
     dfs& operator++() {
         while (!stack.empty()) {
-            _root = stack.back();
-            stack.pop_back();
+            _root = stack.top();
+            stack.pop();
             for (auto it = _root->get_children().rbegin(); it != _root->get_children().rend(); ++it) {
-                stack.push_back(*it);
+                stack.push(*it);
+            }
+            if(!stack.empty()){
+                _root = stack.top();
+            }
+            else{
+                _root = nullptr;
             }
             return *this;
         }
@@ -48,4 +56,3 @@ class dfs{
     }
 
 };
-

@@ -1,6 +1,7 @@
+
 #pragma once
 
-#include <vector>
+#include <stack>
 
 #include "node.hpp"
 
@@ -9,38 +10,12 @@ template <typename T>
 class preOrder {
    private:
     Node<T>* _root;               // Root of the tree
-    std::vector<Node<T>*> stack;  // Stack to store the nodes
+    std::stack<Node<T>*> stack;  // Stack to store the nodes
 
    public:
-    // preOrder(Node<T>* root) : _root(root) {  // Constructor
-    //     if (_root) {
-    //         stack.push_back(_root);
-    //     }
-    // }
-
-    // Node<T>* get_root() const {
-    //     return _root;
-    // }
-
-    // preOrder& operator++() {
-    //     if (!stack.empty()) {
-    //         _root = stack.back();
-    //         std::cout << "Current: " << _root->get_data() << std::endl;
-
-    //         stack.pop_back();
-    //         for (auto it = _root->get_children().rbegin(); it != _root->get_children().rend(); ++it) {
-    //             stack.push_back(*it);
-    //             std::cout << "Pushed: " << (*it)->get_data() << std::endl;
-    //         }
-    //     } else {
-    //         _root = nullptr;
-    //     }
-    //     return *this;
-    // }
-
     preOrder(Node<T>* root) : _root(root) {  // Constructor
         if (_root) {
-            stack.push_back(_root);
+            stack.push(_root);
         }
     }
 
@@ -50,21 +25,19 @@ class preOrder {
 
     preOrder& operator++() {
         if (!stack.empty()) {
-            _root = stack.back();
-            stack.pop_back();
-            for (auto it = _root->get_children().rbegin(); it != _root->get_children().rend(); ++it) {
-                if(*it)
-                    stack.push_back(*it);
+            _root = stack.top();
+            stack.pop();
+            for (auto it = _root->get_children().rbegin(); it != _root->get_children().rend(); ++it) {    
+                stack.push(*it);
             }
             if (!stack.empty()) {
-                _root = stack.back();
+                _root = stack.top();
             }
-            else
-            {
+            else {
                 _root = nullptr;
             }
-
-        } else {
+        } 
+        else {
             _root = nullptr;
         }
         return *this;
@@ -86,3 +59,4 @@ class preOrder {
         return _root;
     }
 };
+

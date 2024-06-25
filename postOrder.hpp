@@ -1,50 +1,65 @@
+
 #pragma once
 
-#include <vector>
-
+#include <stack>
 #include "node.hpp"
 
 template <typename T>
+class postOrder {
+private:
+    Node<T>* _root;               // Current node in the traversal
+    std::stack<Node<T>*> stack;  // Vector to store the nodes
 
-class postOrder{
-    private:
-        Node<T> *_root; // Root of the tree
-        std::vector<Node<T>*> stack; // Stack to store the nodes
-    
-    public:
-        postOrder(Node<T>* root): _root(root){} // Constructor
+    void init(Node<T>* node) {
+        if (node) {
+            stack.push(node);
+            for (auto it = node->get_children().rbegin(); it != node->get_children().rend(); ++it) {
+                init(*it);
+            }
+        }
+    }
 
-    Node<T> *get_root(){
+public:
+    postOrder(Node<T>* root) : _root(nullptr) {
+        if (root) {
+            init(root);
+            _root = stack.top();
+        }
+    }
+
+    Node<T>* get_root() const {
         return _root;
     }
 
     postOrder& operator++() {
-        while (!stack.empty()) {
-            _root = stack.back();
-            stack.pop_back();
-            for (auto child : _root->get_children()) {
-                stack.push_back(child);
-            }
-            return *this;
+    if (!stack.empty()) {
+        stack.pop();
+        if (!stack.empty()) {
+            _root = stack.top();
+        } else {
+            _root = nullptr;
         }
+    } else {
         _root = nullptr;
-        return *this;
+    }
+    return *this;
+}
+
+
+    Node<T>& operator*() {
+        return *_root;
     }
 
-    Node<T> &operator*(){
-        return *_root; // Return the root
+    bool operator!=(const postOrder& other) const {
+        return _root != other._root;
     }
 
-    bool operator!=(const postOrder &other){
-        return _root != other._root; // Return true if the roots are not equal
+    bool operator==(const postOrder& other) const {
+        return _root == other._root;
     }
 
-    bool operator==(const postOrder &other){
-        return _root == other._root; // Return true if the roots are equal
-    }
-
-    Node<T>* operator->(){
+    Node<T>* operator->() {
         return _root;
     }
-
+    
 };

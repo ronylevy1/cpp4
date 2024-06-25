@@ -11,7 +11,7 @@ OBJS = $(SRCS:.cpp=.o)
 
 # Default compiler and flags
 CXX = g++
-CXXFLAGS = -Wall -std=c++11
+CXXFLAGS = -Wall -std=c++11 -Wall -Wextra -g
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
 LDLIBS =

@@ -28,7 +28,14 @@ class bfs{
             for (auto child : _root->get_children()) {
                 myQueue.push(child);
             }
-        } else {
+            if(!myQueue.empty()){
+                _root = myQueue.front();
+            }
+            else{
+                _root = nullptr;
+            }
+        }
+         else {
             _root = nullptr; // End condition: queue is empty
         }
         return *this;

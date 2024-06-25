@@ -1,59 +1,77 @@
+
 #pragma once
 
-#include <vector>
-
+#include <stack>
 #include "node.hpp"
 
 template <typename T>
+class inOrder {
+private:
+    Node<T>* _root; // Root of the tree
+    std::stack<Node<T>*> stack; // Stack to store the nodes
+    //Node<T>* current;
 
-class inOrder{
-    private:
-        Node<T> *_root; // Root of the tree
-        std::vector<Node<T>*> stack; // Stack to store the nodes
-    
-    public:
-        inOrder(Node<T>* root): _root(root){} // Constructor
+    void pushLeft(Node<T>* node) {
+        while (node) {
+            stack.push(node);
+            if (!node->get_children().empty()) {
+                node = node->get_children().front();
+            } else {
+                break;
+            }
+        }
+    }
 
-    Node<T> *get_root(){
+public:
+    inOrder(Node<T>* root) : _root(root) {
+        pushLeft(_root);
+        if (!stack.empty()) {
+            _root = stack.top();
+        }
+    }
+
+    Node<T>* get_root() {
         return _root;
     }
 
-     inOrder& operator++() {
-        if (!stack.empty()) {
-            Node<T>* current = stack.back();
-            stack.pop_back();
-            
-            // Move to the right child and push all left children onto the stack
-            if (!current->get_children().empty()) {
-                current = current->get_children().front();
-                while (current) {
-                    stack.push_back(current);
-                    current = current->get_children().empty() ? nullptr : current->get_children().front();
-                }
-            }
+    inOrder& operator++() {
+        if (stack.empty()) {
+            _root = nullptr;
+            return *this;
+        }
 
-            _root = stack.empty() ? nullptr : stack.back();
+        Node<T>* node = stack.top();
+        stack.pop();
+
+        if (node) {
+            auto& children = node->get_children();
+            if (children.size() > 1) {
+                pushLeft(children[1]); // Push the leftmost nodes of the right subtree
+            }
+        }
+
+        if (!stack.empty()) {
+            _root = stack.top();
         } else {
             _root = nullptr;
         }
+
         return *this;
     }
 
-
-    Node<T> &operator*(){
-        return *_root; // Return the root
+    Node<T>& operator*() {
+        return *_root; // Return the current node
     }
 
-    bool operator!=(const inOrder &other){
-        return _root != other._root; // Return true if the roots are not equal
+    bool operator!=(const inOrder& other) {
+        return _root != other._root; // Return true if the current nodes are not equal
     }
 
-    bool operator==(const inOrder &other){
-        return _root == other._root; // Return true if the roots are equal
+    bool operator==(const inOrder& other) {
+        return _root == other._root; // Return true if the current nodes are equal
     }
 
-    Node<T>* operator->(){
+    Node<T>* operator->() {
         return _root;
     }
-
 };
