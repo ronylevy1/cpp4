@@ -1,4 +1,4 @@
-
+//Roniki04@gmail.com
 #pragma once
 
 #include <stack>
@@ -9,7 +9,7 @@ template <typename T>
 
 class preOrder {
    private:
-    Node<T>* _root;               // Root of the tree
+    Node<T>* _root;              // Root of the tree
     std::stack<Node<T>*> stack;  // Stack to store the nodes
 
    public:
@@ -27,17 +27,15 @@ class preOrder {
         if (!stack.empty()) {
             _root = stack.top();
             stack.pop();
-            for (auto it = _root->get_children().rbegin(); it != _root->get_children().rend(); ++it) {    
+            for (auto it = _root->get_children().rbegin(); it != _root->get_children().rend(); ++it) {
                 stack.push(*it);
             }
             if (!stack.empty()) {
                 _root = stack.top();
-            }
-            else {
+            } else {
                 _root = nullptr;
             }
-        } 
-        else {
+        } else {
             _root = nullptr;
         }
         return *this;
@@ -59,4 +57,3 @@ class preOrder {
         return _root;
     }
 };
-

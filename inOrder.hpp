@@ -1,4 +1,4 @@
-
+//Roniki04@gmail.com
 #pragma once
 
 #include <stack>
@@ -7,13 +7,12 @@
 template <typename T>
 class inOrder {
 private:
-    Node<T>* _root; // Root of the tree
-    std::stack<Node<T>*> stack; // Stack to store the nodes
-    //Node<T>* current;
+    Node<T>* rootTree; // Root of the tree
+    std::stack<Node<T>*> myStack; // Stack to store the nodes
 
     void pushLeft(Node<T>* node) {
         while (node) {
-            stack.push(node);
+            myStack.push(node);
             if (!node->get_children().empty()) {
                 node = node->get_children().front();
             } else {
@@ -23,25 +22,25 @@ private:
     }
 
 public:
-    inOrder(Node<T>* root) : _root(root) {
-        pushLeft(_root);
-        if (!stack.empty()) {
-            _root = stack.top();
+    inOrder(Node<T>* root) : rootTree(root) {
+        pushLeft(rootTree);
+        if (!myStack.empty()) {
+            rootTree = myStack.top();
         }
     }
 
     Node<T>* get_root() {
-        return _root;
+        return rootTree;
     }
 
     inOrder& operator++() {
-        if (stack.empty()) {
-            _root = nullptr;
+        if (myStack.empty()) {
+            rootTree = nullptr;
             return *this;
         }
 
-        Node<T>* node = stack.top();
-        stack.pop();
+        Node<T>* node = myStack.top();
+        myStack.pop();
 
         if (node) {
             auto& children = node->get_children();
@@ -50,28 +49,28 @@ public:
             }
         }
 
-        if (!stack.empty()) {
-            _root = stack.top();
+        if (!myStack.empty()) {
+            rootTree = myStack.top();
         } else {
-            _root = nullptr;
+            rootTree = nullptr;
         }
 
         return *this;
     }
 
     Node<T>& operator*() {
-        return *_root; // Return the current node
+        return *rootTree; // Return the current node
     }
 
     bool operator!=(const inOrder& other) {
-        return _root != other._root; // Return true if the current nodes are not equal
+        return rootTree != other.rootTree; // Return true if the current nodes are not equal
     }
 
     bool operator==(const inOrder& other) {
-        return _root == other._root; // Return true if the current nodes are equal
+        return rootTree == other.rootTree; // Return true if the current nodes are equal
     }
 
     Node<T>* operator->() {
-        return _root;
+        return rootTree;
     }
 };

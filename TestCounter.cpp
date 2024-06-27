@@ -29,6 +29,8 @@ REGISTER_REPORTER("counter", 1, ReporterCounter);
 
 int main(int argc, char **argv)
 {
+    (void)argc;
+    (void)argv;
     Context context;
     context.addFilter("reporters", "counter");
     context.run();

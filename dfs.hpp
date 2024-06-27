@@ -1,3 +1,4 @@
+//Roniki04@gmail.com
 #pragma once
 
 #include <stack>
@@ -6,53 +7,51 @@
 
 template <typename T>
 
-class dfs{
-    private:
-        Node<T> *_root; // Root of the tree
-        std::stack<Node<T>*> stack; // Stack to store the nodes
+class dfs {
+   private:
+    Node<T> *rootTree;              // Root of the tree
+    std::stack<Node<T> *> myStack;  // Stack to store the nodes
 
-    public:
-        dfs(Node<T>* root): _root(root){ // Constructor
-            stack.push(_root); // Push the root to the queue
+   public:
+    dfs(Node<T> *root) : rootTree(root) {  // Constructor
+        myStack.push(rootTree);            // Push the root to the queue
+    }
+
+    Node<T> *get_root() {
+        return rootTree;
+    }
+
+    dfs &operator++() {
+        while (!myStack.empty()) {                                                                            // While the stack is not empty
+            rootTree = myStack.top();                                                                         // Get the top of the stack
+            myStack.pop();                                                                                    // Pop the top of the stack
+            for (auto it = rootTree->get_children().rbegin(); it != rootTree->get_children().rend(); ++it) {  // For each child of the root
+                myStack.push(*it);                                                                            // Push the child to the stack
+            }
+            if (!myStack.empty()) {        // If the stack is not empty
+                rootTree = myStack.top();  // Get the top of the stack
+            } else {                       // If the stack is empty
+                rootTree = nullptr;        // Set the root to null
+            }
+            return *this;  // Return the object
         }
-
-    Node<T> *get_root(){
-        return _root;
+        rootTree = nullptr;  // Set the root to null
+        return *this;        // Return the object
     }
 
-    dfs& operator++() {
-        while (!stack.empty()) {
-            _root = stack.top();
-            stack.pop();
-            for (auto it = _root->get_children().rbegin(); it != _root->get_children().rend(); ++it) {
-                stack.push(*it);
-            }
-            if(!stack.empty()){
-                _root = stack.top();
-            }
-            else{
-                _root = nullptr;
-            }
-            return *this;
-        }
-        _root = nullptr;
-        return *this;
+    Node<T> &operator*() {
+        return *rootTree;  // Return the root
     }
 
-    Node<T> &operator*(){
-        return *_root; // Return the root
+    bool operator!=(const dfs &other) {
+        return rootTree != other.rootTree;  // Return true if the roots are not equal
     }
 
-    bool operator!=(const dfs &other){
-        return _root != other._root; // Return true if the roots are not equal
+    bool operator==(const dfs &other) {
+        return rootTree == other.rootTree;  // Return true if the roots are equal
     }
 
-    bool operator==(const dfs &other){
-        return _root == other._root; // Return true if the roots are equal
+    Node<T> *operator->() {
+        return rootTree;  // Return the root
     }
-
-    Node<T>* operator->(){
-        return _root;
-    }
-
 };

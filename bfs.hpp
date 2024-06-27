@@ -1,3 +1,4 @@
+//Roniki04@gmail.com
 #pragma once
 #include <queue>
 
@@ -7,62 +8,53 @@ template <typename T>
 
 class bfs{
     private:
-        Node<T> *_root; // Root of the tree
+        Node<T> *rootTree; // Root of the tree
         std::queue<Node<T>*> myQueue; // Queue to store the nodes
 
     public:
-        bfs(Node<T>* root): _root(root){ // Constructor
-            myQueue.push(_root); // Push the root to the queue
+        bfs(Node<T>* root): rootTree(root){ // Constructor
+            myQueue.push(rootTree); // Push the root to the queue
         }
 
     Node<T> *get_root(){
-        return _root;
+        return rootTree;
     }
 
     bfs& operator++() {
-        if (!myQueue.empty()) {
-            _root = myQueue.front();
-            myQueue.pop();
+        if (!myQueue.empty()) { // While the queue is not empty
+            rootTree = myQueue.front(); // Get the front of the queue
+            myQueue.pop(); // Pop the front of the queue
 
-            // Enqueue all children of the current node
-            for (auto child : _root->get_children()) {
-                myQueue.push(child);
+            for (auto child : rootTree->get_children()) { // For each child of the root
+                myQueue.push(child); // Push the child to the queue
             }
-            if(!myQueue.empty()){
-                _root = myQueue.front();
+            if(!myQueue.empty()){ // If the queue is not empty
+                rootTree = myQueue.front(); // Get the front of the queue
             }
-            else{
-                _root = nullptr;
+            else{ // If the queue is empty
+                rootTree = nullptr; // Set the root to null
             }
         }
-         else {
-            _root = nullptr; // End condition: queue is empty
+         else { // If the queue is empty
+            rootTree = nullptr; // Set the root to null
         }
-        return *this;
+        return *this; // Return the object
     }
 
     Node<T> &operator*(){
-        return *_root; // Return the root
+        return *rootTree; // Return the root
     }
 
     bool operator!=(const bfs &other){
-        return _root != other._root; // Return true if the roots are not equal
+        return rootTree != other.rootTree; // Return true if the roots are not equal
     }
 
     bool operator==(const bfs &other){
-        return _root == other._root; // Return true if the roots are equal
-    }
-
-    void print(){
-        while(_root != nullptr){ // While the root is not null
-            std::cout << _root->get_data() << " "; // Print the data
-            ++(*this); // Increment the object
-        }
-        std::cout << std::endl; // Print a new line
+        return rootTree == other.rootTree; // Return true if the roots are equal
     }
 
     Node<T>* operator->(){
-        return _root;
+        return rootTree; // Return the root
     }
 
 };

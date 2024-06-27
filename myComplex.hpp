@@ -1,3 +1,4 @@
+//Roniki04@gmail.com
 #include <iostream>
 
 class MyComplex {
@@ -58,17 +59,6 @@ public:
     bool operator!=(const MyComplex& other) const {
         return !(*this == other);
     }
-
-
-    // friend std::ostream& operator<<(std::ostream& os, const MyComplex& c) {
-    //     os << c.real;
-    //     if (c.imag >= 0) {
-    //         os << "+" << c.imag << "i";
-    //     } else {
-    //         os << c.imag << "i";
-    //     }
-    //     return os;
-    // }
 
         friend std::ostream& operator<<(std::ostream& os, const MyComplex& c) {
         // פונקציה פנימית לעיצוב מספרים
