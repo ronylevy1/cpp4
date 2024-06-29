@@ -53,7 +53,7 @@ TEST_CASE("Testing preOrder - double"){
     Node<double> n6(7.7);
     Node<double> n7(8.8);
 
-    Tree<double> tree(4);
+    Tree<double,4> tree;
     tree.add_root(&root_node);
 
     tree.add_sub_node(&root_node, &n1);
@@ -83,7 +83,7 @@ TEST_CASE("Testing preOrder - string"){
     Node<std::string> n4("shai");
     Node<std::string> n5("chanan");
 
-    Tree<std::string> tree(5); 
+    Tree<std::string,5> tree; 
     tree.add_root(&root_node);
 
     tree.add_sub_node(&root_node, &n1);
@@ -104,15 +104,13 @@ TEST_CASE("Testing preOrder - string"){
 TEST_CASE("Testing preOrder - myComplex"){
     Node<MyComplex> root_node(MyComplex(1, 1));
 
-   
-
     Node<MyComplex> n1(MyComplex(2, 2));
     Node<MyComplex> n2(MyComplex(3, 3));
     Node<MyComplex> n3(MyComplex(4, 4));
     Node<MyComplex> n4(MyComplex(5, 5));
     Node<MyComplex> n5(MyComplex(6, 6));
 
-    Tree<MyComplex> tree(3);
+    Tree<MyComplex,3> tree;
     tree.add_root(&root_node);
 
     tree.add_sub_node(&root_node, &n1);
@@ -136,15 +134,13 @@ TEST_CASE("Testing preOrder - myComplex"){
 TEST_CASE("Testing postOrder") {
     Node<int> root_node(1);
 
-    
-
     Node<int> n1(2);
     Node<int> n2(3);
     Node<int> n3(4);
     Node<int> n4(5);
     Node<int> n5(6);
 
-    Tree<int> tree(3);
+    Tree<int> tree;
     tree.add_root(&root_node);
 
     tree.add_sub_node(&root_node, &n1);
@@ -169,14 +165,13 @@ TEST_CASE("Testing postOrder") {
 TEST_CASE("Testing inOrder") {
     Node<int> root_node(1);
 
-
     Node<int> n1(2);
     Node<int> n2(3);
     Node<int> n3(4);
     Node<int> n4(5);
     Node<int> n5(6);
 
-    Tree<int> tree(3);
+    Tree<int> tree;
     tree.add_root(&root_node);
 
     tree.add_sub_node(&root_node, &n1);
@@ -200,14 +195,13 @@ TEST_CASE("Testing inOrder") {
 TEST_CASE("Testing myHeap") {
     Node<int> root_node(1);
 
-
     Node<int> n1(2);
     Node<int> n2(3);
     Node<int> n3(4);
     Node<int> n4(5);
     Node<int> n5(6);
 
-    Tree<int> tree(3);
+    Tree<int> tree;
     tree.add_root(&root_node);
 
     tree.add_sub_node(&root_node, &n1);
@@ -218,7 +212,7 @@ TEST_CASE("Testing myHeap") {
 
     myHeap<int> heap = tree.MyHeap();
 
-    std::vector<int> expected = {1, 2, 4};
+    std::vector<int> expected = {1, 2, 3};
     std::vector<int> result;
 
     for (int i = 0; i < 3; ++i) {
@@ -269,7 +263,7 @@ TEST_CASE("Testing Node") {
 // Test for Tree
 TEST_CASE("Testing Tree") {
     Node<int> root_node(1);
-    Tree<int> tree(3);
+    Tree<int,3> tree;
 
     tree.add_root(&root_node);
     CHECK(tree.get_root()->get_value() == 1);
@@ -280,13 +274,12 @@ TEST_CASE("Testing Tree") {
     tree.add_sub_node(&root_node, &n1);
     tree.add_sub_node(&root_node, &n2);
 
-    CHECK(tree.get_root()->get_children().size() == 2);
+    CHECK(tree.get_root()->get_childrenNodes().size() == 2);
 }
 
 // Test for dfs
 TEST_CASE("Testing dfs") {
     Node<int> root_node(1);
-
 
     Node<int> n1(2);
     Node<int> n2(3);
@@ -294,7 +287,7 @@ TEST_CASE("Testing dfs") {
     Node<int> n4(5);
     Node<int> n5(6);
 
-    Tree<int> tree(3);
+    Tree<int,3> tree;
     tree.add_root(&root_node);
 
     tree.add_sub_node(&root_node, &n1);
@@ -317,14 +310,13 @@ TEST_CASE("Testing dfs") {
 TEST_CASE("Testing bfs") {
     Node<int> root_node(1);
 
-
     Node<int> n1(2);
     Node<int> n2(3);
     Node<int> n3(4);
     Node<int> n4(5);
     Node<int> n5(6);
     
-    Tree<int> tree(3);
+    Tree<int,3> tree;
     tree.add_root(&root_node);
 
     tree.add_sub_node(&root_node, &n1);
@@ -341,4 +333,5 @@ TEST_CASE("Testing bfs") {
     }
 
     CHECK(result == expected);
+   // tree.display();
 }

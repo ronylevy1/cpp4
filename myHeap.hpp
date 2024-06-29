@@ -3,89 +3,65 @@
 #include "node.hpp"
 #include <vector>
 #include <queue>
+#include <algorithm>
 #include <iostream>
 
 template <typename T>
 class myHeap {
 private:
-    Node<T>* _root; // Root of the tree
-    std::queue<Node<T>*> nodes_queue; // Queue for level-order traversal
+    std::vector<Node<T>*> heap; // The heap
+    size_t index; // Index of the heap
 
 public:
-    // Constructor
-    myHeap(Node<T>* root) : _root(root) {
-        if (_root) {
-            nodes_queue.push(_root);
+    myHeap(Node<T>* root) : index(0) {
+        if (root) { // If the root is not null
+            std::queue<Node<T>*> q; // Queue to store the nodes
+            q.push(root); // Push the root to the queue
+            while (!q.empty()) { // While the queue is not empty
+                Node<T>* node = q.front(); // Get the front of the queue
+                q.pop(); // Pop the front of the queue
+                heap.push_back(node); // Push the node to the heap
+                for (auto child : node->get_childrenNodes()) { // For each child of the node
+                    q.push(child); // Push the child to the queue
+                }
+            }
+            std::make_heap(heap.begin(), heap.end(), [](Node<T>* a, Node<T>* b) { // Make the heap
+                return a->get_value() > b->get_value();
+            });
         }
     }
 
-    Node<T>* get_root() const {
-        return _root;
-    }
-
     myHeap& operator++() {
-        if (!nodes_queue.empty()) {
-            Node<T>* current = nodes_queue.front();
-            nodes_queue.pop();
-            for (auto child : current->get_children()) {
-                nodes_queue.push(child);
-            }
-            if (!nodes_queue.empty()) {
-                _root = nodes_queue.front();
-            } else {
-                _root = nullptr;
-            }
-        } else {
-            _root = nullptr;
+        if (index < heap.size()) { // If the index is less than the size of the heap
+            ++index; // Add to the index
         }
         return *this;
     }
 
-    T& operator*() {
-        return _root->get_data(); // Access data of current node
-    }
-
-    bool operator!=(const myHeap& other) const {
-        return _root != other._root; // Return true if the roots are not equal
-    }
-
-    bool operator==(const myHeap& other) const {
-        return _root == other._root; // Return true if the roots are equal
+    Node<T>& operator*() {
+        return *heap[index]; // Access the data of the current node
     }
 
     Node<T>* operator->() {
-        return _root;
+        return heap[index]; // Return the current node
     }
 
-    static myHeap makeheap(const std::vector<T>& values) {
-        if (values.empty()) {
-            return myHeap(nullptr);
-        }
-
-        Node<T>* root = new Node<T>(values[0]);
-        std::queue<Node<T>*> nodes;
-        nodes.push(root);
-
-        for (size_t i = 1; i < values.size(); ++i) {
-            Node<T>* node = new Node<T>(values[i]);
-            if (!nodes.empty()) {
-                Node<T>* parent = nodes.front();
-                parent->add_child(node);
-                nodes.push(node);
-                if (parent->get_children().size() == 2) {
-                    nodes.pop();
-                }
-            }
-        }
-
-        return myHeap(root);
+    bool operator!=(const myHeap& other) const {
+        return index != other.index || heap != other.heap;
     }
 
-    myHeap begin() {
-        return myHeap(_root);
+    bool operator==(const myHeap& other) const {
+        return index == other.index && heap == other.heap;
     }
 
-    myHeap end() {
-        return myHeap(nullptr);
+    myHeap begin() { // Return the beginning of the heap
+        return *this;
+    }
+
+    myHeap end() { // Return the end of the heap
+        myHeap endHeap = *this;
+        endHeap.index = heap.size();
+        return endHeap;
     }
 };
+

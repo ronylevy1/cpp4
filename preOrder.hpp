@@ -9,51 +9,51 @@ template <typename T>
 
 class preOrder {
    private:
-    Node<T>* _root;              // Root of the tree
-    std::stack<Node<T>*> stack;  // Stack to store the nodes
+    Node<T>* rootTree; // Root of the tree
+    std::stack<Node<T>*> stack; // Stack to store the nodes
 
    public:
-    preOrder(Node<T>* root) : _root(root) {  // Constructor
-        if (_root) {
-            stack.push(_root);
+    preOrder(Node<T>* root) : rootTree(root) {  // Constructor
+        if (rootTree) { // If the root is not null
+            stack.push(rootTree); // Push the root to the stack
         }
     }
 
     Node<T>* get_root() const {
-        return _root;
+        return rootTree; // Return the root
     }
 
     preOrder& operator++() {
-        if (!stack.empty()) {
-            _root = stack.top();
-            stack.pop();
-            for (auto it = _root->get_children().rbegin(); it != _root->get_children().rend(); ++it) {
-                stack.push(*it);
+        if (!stack.empty()) { // If the stack is not empty
+            rootTree = stack.top(); // Get the top of the stack
+            stack.pop(); // Pop the top of the stack
+            for (auto it = rootTree->get_childrenNodes().rbegin(); it != rootTree->get_childrenNodes().rend(); ++it) {
+                stack.push(*it); // Push the child to the stack
             }
-            if (!stack.empty()) {
-                _root = stack.top();
+            if (!stack.empty()) { // If the stack is not empty
+                rootTree = stack.top(); // Get the top of the stack
             } else {
-                _root = nullptr;
+                rootTree = nullptr; // Set the root to null
             }
         } else {
-            _root = nullptr;
+            rootTree = nullptr;
         }
         return *this;
     }
 
     T& operator*() {
-        return _root->get_data();  // Access data of current node
+        return rootTree->get_data(); // Access data of current node
     }
 
     bool operator!=(const preOrder& other) const {
-        return _root != other._root;  // Return true if the roots are not equal
+        return rootTree != other.rootTree; // Return true if the roots are not equal
     }
 
     bool operator==(const preOrder& other) const {
-        return _root == other._root;  // Return true if the roots are equal
+        return rootTree == other.rootTree; // Return true if the roots are equal
     }
 
     Node<T>* operator->() {
-        return _root;
+        return rootTree;
     }
 };

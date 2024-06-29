@@ -21,11 +21,11 @@ class bfs{
     }
 
     bfs& operator++() {
-        if (!myQueue.empty()) { // While the queue is not empty
+        if (!myQueue.empty()) { // If the queue is not empty
             rootTree = myQueue.front(); // Get the front of the queue
             myQueue.pop(); // Pop the front of the queue
 
-            for (auto child : rootTree->get_children()) { // For each child of the root
+            for (auto child : rootTree->get_childrenNodes()) { // For each child of the root
                 myQueue.push(child); // Push the child to the queue
             }
             if(!myQueue.empty()){ // If the queue is not empty

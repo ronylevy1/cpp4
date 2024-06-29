@@ -3,80 +3,81 @@
 
 class MyComplex {
 private:
-    double real;
-    double imag;
+    double real; // Real part
+    double imag; // Imaginary part
 
 public:
-    // קונסטרקטור ברירת מחדל
-    MyComplex() : real(0), imag(0) {}
+    MyComplex() : real(0), imag(0) {} // Default constructor
 
-    // קונסטרקטור עם פרמטרים
-    MyComplex(double real, double imag) : real(real), imag(imag) {}
+    MyComplex(double real, double imag) : real(real), imag(imag) {} // Constructor
 
-    // קונסטרקטור העתקה
-    MyComplex(const MyComplex& other) : real(other.real), imag(other.imag) {}
+    MyComplex(const MyComplex& other) : real(other.real), imag(other.imag) {} // Copy constructor
 
-    // גטרים
-    double getReal() const { return real; }
-    double getImag() const { return imag; }
+    double getReal() const { 
+        return real;  // Return the real part
+    }
+    double getImag() const {
+        return imag; // Return the imaginary part
+    }
 
-    // אופרטור השמה
     MyComplex& operator=(const MyComplex& other) {
-        if (this != &other) {
-            real = other.real;
-            imag = other.imag;
+        if (this != &other) { // If the objects are not the same
+            real = other.real; // Copy the real part
+            imag = other.imag; // Copy the imaginary part
         }
         return *this;
     }
 
-    // אופרטור חיבור
     MyComplex operator+(const MyComplex& other) const {
-        return MyComplex(real + other.real, imag + other.imag);
+        return MyComplex(real + other.real, imag + other.imag); // Return the sum of the two complex numbers
     }
 
-    // אופרטור חיסור
     MyComplex operator-(const MyComplex& other) const {
-        return MyComplex(real - other.real, imag - other.imag);
+        return MyComplex(real - other.real, imag - other.imag); // Return the difference of the two complex numbers
     }
 
-    // אופרטור כפל
     MyComplex operator*(const MyComplex& other) const {
-        return MyComplex(real * other.real - imag * other.imag, real * other.imag + imag * other.real);
+        return MyComplex(real * other.real - imag * other.imag, real * other.imag + imag * other.real); // Return the product of the two complex numbers
     }
 
-    // אופרטור חילוק
     MyComplex operator/(const MyComplex& other) const {
-        double denominator = other.real * other.real + other.imag * other.imag;
+        double denominator = other.real * other.real + other.imag * other.imag; // Calculate the denominator
         return MyComplex((real * other.real + imag * other.imag) / denominator, 
                        (imag * other.real - real * other.imag) / denominator);
     }
 
-    // אופרטור השוואה
     bool operator==(const MyComplex& other) const {
-        return real == other.real && imag == other.imag;
+        return real == other.real && imag == other.imag; // Return true if the real and imaginary parts are equal
     }
 
     bool operator!=(const MyComplex& other) const {
-        return !(*this == other);
+        return !(*this == other); 
+    }  
+
+    // implement the operator<
+    bool operator>(const MyComplex& other) const {
+        return real > other.real || (real == other.real && imag > other.imag);
+    } 
+
+    friend std::ostream& operator<<(std::ostream& os, const MyComplex& c) { 
+    // Print the real part
+    if (c.real == static_cast<int>(c.real)) { 
+        os << static_cast<int>(c.real);
+    } else {
+        os << c.real;
     }
 
-        friend std::ostream& operator<<(std::ostream& os, const MyComplex& c) {
-        // פונקציה פנימית לעיצוב מספרים
-        auto printFormatted = [](std::ostream& os, double value) {
-            if (value == static_cast<int>(value)) {
-                os << static_cast<int>(value);
-            } else {
-                os << value;
-            }
-        };
-
-        printFormatted(os, c.real);
-        if (c.imag >= 0) {
-            os << "+";
-        }
-        printFormatted(os, c.imag);
-        os << "i";
-        
-        return os;
+    // Print the imaginary part with sign
+    if (c.imag >= 0) {
+        os << "+";
     }
+    if (c.imag == static_cast<int>(c.imag)) {
+        os << static_cast<int>(c.imag);
+    } else {
+        os << c.imag;
+    }
+    os << "i"; // Print the imaginary unit
+
+    return os;
+}
 };
