@@ -1,5 +1,5 @@
 # Target executable name
-TARGET = main 
+TARGET = main
 
 # Header files
 HDRS = node.hpp tree.hpp bfs.hpp dfs.hpp inOrder.hpp preOrder.hpp postOrder.hpp myHeap.hpp
@@ -27,6 +27,10 @@ $(TARGET): main.o
 test: TestCounter.o Test.o 
 	$(CXX) $(CXXFLAGS) $^ -o test $(LDLIBS) $(LDFLAGS)
 
+# Build and run the tree program
+tree: $(TARGET)
+	./$(TARGET)
+
 # Compile source files into object files
 %.o: %.cpp $(HDRS)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
@@ -35,4 +39,4 @@ test: TestCounter.o Test.o
 clean:
 	rm -f $(OBJS) $(TARGET) test
 
-.PHONY: all clean test
+.PHONY: all clean test tree

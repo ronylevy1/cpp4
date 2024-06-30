@@ -43,8 +43,7 @@ public:
         rootTree = nullptr; // Set the root to null
     }
     return *this;
-}
-
+    }
 
     Node<T>& operator*() {
         return *rootTree;

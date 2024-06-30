@@ -53,7 +53,7 @@ TEST_CASE("Testing preOrder - double"){
     Node<double> n6(7.7);
     Node<double> n7(8.8);
 
-    Tree<double,4> tree;
+    Tree<double,3> tree;
     tree.add_root(&root_node);
 
     tree.add_sub_node(&root_node, &n1);
@@ -83,7 +83,7 @@ TEST_CASE("Testing preOrder - string"){
     Node<std::string> n4("shai");
     Node<std::string> n5("chanan");
 
-    Tree<std::string,5> tree; 
+    Tree<std::string> tree; 
     tree.add_root(&root_node);
 
     tree.add_sub_node(&root_node, &n1);
@@ -115,11 +115,11 @@ TEST_CASE("Testing preOrder - myComplex"){
 
     tree.add_sub_node(&root_node, &n1);
     tree.add_sub_node(&root_node, &n2);
-    tree.add_sub_node(&n1, &n3);
+    tree.add_sub_node(&root_node, &n3);
     tree.add_sub_node(&n1, &n4);
     tree.add_sub_node(&n2, &n5);
 
-    std::vector<MyComplex> expected = {MyComplex(1, 1), MyComplex(2, 2), MyComplex(4, 4), MyComplex(5, 5), MyComplex(3, 3), MyComplex(6, 6)};
+    std::vector<MyComplex> expected = {MyComplex(1, 1), MyComplex(2, 2), MyComplex(5, 5), MyComplex(3, 3), MyComplex(6, 6),  MyComplex(4, 4)};
     std::vector<MyComplex> result;
 
     for (auto node = tree.begin_pre_order(); node != tree.end_pre_order(); ++node) {
@@ -263,7 +263,7 @@ TEST_CASE("Testing Node") {
 // Test for Tree
 TEST_CASE("Testing Tree") {
     Node<int> root_node(1);
-    Tree<int,3> tree;
+    Tree<int> tree;
 
     tree.add_root(&root_node);
     CHECK(tree.get_root()->get_value() == 1);
@@ -292,11 +292,11 @@ TEST_CASE("Testing dfs") {
 
     tree.add_sub_node(&root_node, &n1);
     tree.add_sub_node(&root_node, &n2);
-    tree.add_sub_node(&n1, &n3);
+    tree.add_sub_node(&root_node, &n3);
     tree.add_sub_node(&n1, &n4);
     tree.add_sub_node(&n2, &n5);
 
-    std::vector<int> expected = {1, 2, 4, 5, 3, 6};
+    std::vector<int> expected = {1, 2, 5, 3, 6, 4};
     std::vector<int> result;
 
     for (auto node = tree.begin_dfs_scan(); node != tree.end_dfs_scan(); ++node) {
@@ -315,17 +315,21 @@ TEST_CASE("Testing bfs") {
     Node<int> n3(4);
     Node<int> n4(5);
     Node<int> n5(6);
+    Node<int> n6(7);
+    Node<int> n7(8);
     
-    Tree<int,3> tree;
+    Tree<int,4> tree;
     tree.add_root(&root_node);
 
     tree.add_sub_node(&root_node, &n1);
     tree.add_sub_node(&root_node, &n2);
+    tree.add_sub_node(&root_node, &n6);
+    tree.add_sub_node(&root_node, &n7);
     tree.add_sub_node(&n1, &n3);
     tree.add_sub_node(&n1, &n4);
     tree.add_sub_node(&n2, &n5);
 
-    std::vector<int> expected = {1, 2, 3, 4, 5, 6};
+    std::vector<int> expected = {1, 2, 3, 7, 8, 4, 5, 6};
     std::vector<int> result;
 
     for (auto node = tree.begin_bfs_scan(); node != tree.end_bfs_scan(); ++node) {
@@ -333,5 +337,4 @@ TEST_CASE("Testing bfs") {
     }
 
     CHECK(result == expected);
-   // tree.display();
 }

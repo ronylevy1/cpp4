@@ -161,6 +161,8 @@ class Tree {
     }
 };
 
+
+
 template <typename T>
 class Tree<T, 2> {  // Specific for binary tree
    private:

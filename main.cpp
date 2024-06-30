@@ -59,7 +59,6 @@ int main() {
     tree.add_sub_node(&n2, &n5);
     
 
-
     // Print tree nodes in different orders
     std::cout << "Pre-order traversal:" << std::endl;
     for (auto node = tree.begin_pre_order(); node != tree.end_pre_order(); ++node) {
